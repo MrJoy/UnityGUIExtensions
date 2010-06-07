@@ -34,6 +34,15 @@ and cloned with:
     git clone git://github.com/MrJoy/UnityGUIExtensions.git
 
 
+An example project is available here:
+
+    http://github.com/MrJoy/UnityGUIExtensions.Examples
+
+and can be cloned with:
+
+    git clone git://github.com/MrJoy/UnityGUIExtensions.Examples.git
+
+
 ### Contributing
 
 If you'd like to contribute to UnityGUIExtensions, I ask that you fork 
