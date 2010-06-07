@@ -22,6 +22,10 @@ considerable modification.
 Grab the unitypackage and install it into your project, OR add this project as
 a submodule if you're using git.
 
+You can grab the unitypackage here:
+
+    http://github.com/MrJoy/UnityGUIExtensions.Examples/downloads
+
 
 ## Source ###################################################################
 
