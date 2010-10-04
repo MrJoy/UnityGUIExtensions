@@ -129,11 +129,11 @@ public class GUICommon {
 
      GUILayout.BeginArea( rect );
      
-     LINE_OPTIONS_V[1].value = rect.height;
-     LINE_OPTIONS_V[2].value = rect.height;
+     LINE_OPTIONS_V[1] = GUILayout.Height(rect.height);
+     LINE_OPTIONS_V[2] = GUILayout.MinHeight(rect.height);
 
-     LINE_OPTIONS_H[1].value = rect.width;
-     LINE_OPTIONS_H[2].value = rect.width;
+     LINE_OPTIONS_H[1] = GUILayout.Width(rect.width);
+     LINE_OPTIONS_H[2] = GUILayout.MinWidth(rect.width);
 
      GUILayout.BeginVertical(LINE_OPTIONS_V);
      BeginLine(alignment);
