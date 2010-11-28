@@ -1,74 +1,77 @@
 using UnityEngine;
 
-// Extensions in the spirit/style of GUILayout.*
-public static class GUILayoutExt {
-  public static string AutoSelectTextArea(string name, string text, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUILayout.TextArea(text, options);
-    GUIAutoSelect.AutoSelectPost(name);
+// Extensions in the spirit/style of GUI.*
+public static class GUIAutoSelect {
+  public static string TextArea(string name, Rect pos, string text) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUI.TextArea(pos, text);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 
-  public static string AutoSelectTextArea(string name, string text, int maxLength, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUILayout.TextArea(text, maxLength, options);
-    GUIAutoSelect.AutoSelectPost(name);
+  public static string TextArea(string name, Rect pos, string text, int maxLength) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUI.TextArea(pos, text, maxLength);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 
-  public static string AutoSelectTextArea(string name, string text, GUIStyle style, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUILayout.TextArea(text, style, options);
-    GUIAutoSelect.AutoSelectPost(name);
+  public static string TextArea(string name, Rect pos, string text, GUIStyle style) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUI.TextArea(pos, text, style);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 
-  public static string AutoSelectTextArea(string name, string text, int maxLength, GUIStyle style, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUILayout.TextArea(text, maxLength, style, options);
-    GUIAutoSelect.AutoSelectPost(name);
+  public static string TextArea(string name, Rect pos, string text, int maxLength, GUIStyle style) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUI.TextArea(pos, text, maxLength, style);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 }
 
-// Extensions in the spirit/style of GUI.*
-public static class GUIExt {
-  public static string AutoSelectTextArea(string name, Rect pos, string text) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUI.TextArea(pos, text);
-    GUIAutoSelect.AutoSelectPost(name);
+// Extensions in the spirit/style of GUILayout.*
+public static class GUILayoutAutoSelect {
+  public static string TextArea(string name, string text, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUILayout.TextArea(text, options);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
-  public static string AutoSelectTextArea(string name, Rect pos, string text, int maxLength) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUI.TextArea(pos, text, maxLength);
-    GUIAutoSelect.AutoSelectPost(name);
+
+  public static string TextArea(string name, string text, int maxLength, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUILayout.TextArea(text, maxLength, options);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
-  public static string AutoSelectTextArea(string name, Rect pos, string text, GUIStyle style) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUI.TextArea(pos, text, style);
-    GUIAutoSelect.AutoSelectPost(name);
+
+  public static string TextArea(string name, string text, GUIStyle style, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUILayout.TextArea(text, style, options);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
-  public static string AutoSelectTextArea(string name, Rect pos, string text, int maxLength, GUIStyle style) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = GUI.TextArea(pos, text, maxLength, style);
-    GUIAutoSelect.AutoSelectPost(name);
+
+  public static string TextArea(string name, string text, int maxLength, GUIStyle style, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = GUILayout.TextArea(text, maxLength, style, options);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 }
 
 // Helper/support stuff.
-public static class GUIAutoSelect {
+public static class CoreAutoSelect {
   // Internal gubbins for auto-select controls.
   private static int lastKeyboardControl = -1;
-  public static void AutoSelectPre(string name) {
+  public static void Pre(string name) {
     // Each widget needs a unique name so we can differentiate them.
     GUI.SetNextControlName(name);
   }
 
-  public static void AutoSelectPost(string name) {
+  public static void Post(string name) {
     // And now, the magic:
     // Check to see if keyboard focus has changed on us...
     int kbdCtrlId = GUIUtility.keyboardControl;

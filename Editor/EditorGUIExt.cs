@@ -3,69 +3,67 @@ using UnityEditor;
 using System;
 using System.Collections;
 
-// Extensions in the spirit/style of EditorGUILayout.*
-public static class EditorGUILayoutExt {
-  public static string AutoSelectTextArea(string name, string text, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = EditorGUILayout.TextArea(text, options);
-    GUIAutoSelect.AutoSelectPost(name);
-    return tmp;
-  }
-
-  public static string AutoSelectTextArea(string name, string text, int maxLength, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = EditorGUICommon.ClampLength(EditorGUILayout.TextArea(text, options), maxLength);
-    GUIAutoSelect.AutoSelectPost(name);
-    return tmp;
-  }
-
-  public static string AutoSelectTextArea(string name, string text, GUIStyle style, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = EditorGUILayout.TextArea(text, style, options);
-    GUIAutoSelect.AutoSelectPost(name);
-    return tmp;
-  }
-
-  public static string AutoSelectTextArea(string name, string text, int maxLength, GUIStyle style, params GUILayoutOption[] options) {
-    GUIAutoSelect.AutoSelectPre(name);
-    string tmp = EditorGUICommon.ClampLength(EditorGUILayout.TextArea(text, style, options), maxLength);
-    GUIAutoSelect.AutoSelectPost(name);
-    return tmp;
-  }
-}
-
-
 // Extensions in the spirit/style of EditorGUI.*
-public static class EditorGUIExt {
-  public static string AutoSelectTextArea(string name, Rect pos, string text) {
-    GUIAutoSelect.AutoSelectPre(name);
+public static class EditorGUIAutoSelect {
+  public static string TextArea(string name, Rect pos, string text) {
+    CoreAutoSelect.Pre(name);
     string tmp = EditorGUI.TextArea(pos, text);
-    GUIAutoSelect.AutoSelectPost(name);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 
-  public static string AutoSelectTextArea(string name, Rect pos, string text, int maxLength) {
-    GUIAutoSelect.AutoSelectPre(name);
+  public static string TextArea(string name, Rect pos, string text, int maxLength) {
+    CoreAutoSelect.Pre(name);
     string tmp = EditorGUICommon.ClampLength(EditorGUI.TextArea(pos, text), maxLength);
-    GUIAutoSelect.AutoSelectPost(name);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 
-  public static string AutoSelectTextArea(string name, Rect pos, string text, GUIStyle style) {
-    GUIAutoSelect.AutoSelectPre(name);
+  public static string TextArea(string name, Rect pos, string text, GUIStyle style) {
+    CoreAutoSelect.Pre(name);
     string tmp = EditorGUI.TextArea(pos, text, style);
-    GUIAutoSelect.AutoSelectPost(name);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 
-  public static string AutoSelectTextArea(string name, Rect pos, string text, int maxLength, GUIStyle style) {
-    GUIAutoSelect.AutoSelectPre(name);
+  public static string TextArea(string name, Rect pos, string text, int maxLength, GUIStyle style) {
+    CoreAutoSelect.Pre(name);
     string tmp = EditorGUICommon.ClampLength(EditorGUI.TextArea(pos, text, style), maxLength);
-    GUIAutoSelect.AutoSelectPost(name);
+    CoreAutoSelect.Post(name);
     return tmp;
   }
 }
 
+// Extensions in the spirit/style of EditorGUILayout.*
+public static class EditorGUILayoutAutoSelect {
+  public static string TextArea(string name, string text, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = EditorGUILayout.TextArea(text, options);
+    CoreAutoSelect.Post(name);
+    return tmp;
+  }
+
+  public static string TextArea(string name, string text, int maxLength, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = EditorGUICommon.ClampLength(EditorGUILayout.TextArea(text, options), maxLength);
+    CoreAutoSelect.Post(name);
+    return tmp;
+  }
+
+  public static string TextArea(string name, string text, GUIStyle style, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = EditorGUILayout.TextArea(text, style, options);
+    CoreAutoSelect.Post(name);
+    return tmp;
+  }
+
+  public static string TextArea(string name, string text, int maxLength, GUIStyle style, params GUILayoutOption[] options) {
+    CoreAutoSelect.Pre(name);
+    string tmp = EditorGUICommon.ClampLength(EditorGUILayout.TextArea(text, style, options), maxLength);
+    CoreAutoSelect.Post(name);
+    return tmp;
+  }
+}
 
 // Helper/support stuff.
 internal static class EditorGUICommon {
