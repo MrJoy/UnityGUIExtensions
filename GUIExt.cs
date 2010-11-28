@@ -66,7 +66,7 @@ public class GUICommon {
       string focusedControl = GUI.GetNameOfFocusedControl();
       if(focusedControl == name) {
         // It is!  Now, get the editor state (spooky voodo!), and tweak it.
-        TextEditor t = GUIUtility.GetStateObject(typeof(TextEditor), kbdCtrlId) as TextEditor;
+        TextEditor t = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), kbdCtrlId);
         t.SelectAll();
         // Update this here or state gets mangled when there's multiple 
         // AutoSelectTextArea.
