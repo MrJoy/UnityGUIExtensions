@@ -44,7 +44,8 @@ public class GUIExt : GUICommon {
 // Functionality shared by both GUIExt and GUILayoutExt.
 public class GUICommon {
   protected GUICommon() {}
-  // Using delegates to DRY up the various parametric polymorphisms that Unity provides.
+  // Using delegates to DRY up the various parametric polymorphisms that Unity
+  // provides.
   protected delegate string Block();
 
 
