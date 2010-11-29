@@ -145,6 +145,8 @@ configuration for the panes:
 
 _This feature may only be used from editor classes_
 
+(Documentation coming soon.)
+
 
 ## License
 
