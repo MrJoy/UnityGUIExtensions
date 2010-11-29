@@ -1,33 +1,44 @@
-UnityGUIExtensions
-==================
+# UnityGUIExtensions
 
-This package provides you with a set of classes in the spirit of GUI, GUILayout,
-EditorGUI, and EditorGUILayout but with additional functionality that I've found
-helpful.  Right now, that's not a lot, but I present this to you anyway.
+This package provides you with a set of classes providing extended GUI widgets
+for Unity -- both for runtime usage and for editor usage --
 
-Widgets:
+Widgets (including where they can be used from):
 
-* AutoSelectTextArea - A variant of the TextArea that auto-selects all content 
-when the widget gets focus, and which provides length-clamping for the Editor
-variant.
+* AutoSelect TextArea (_Runtime & Editor_) - A variant of the TextArea that
+  auto-selects all content when the widget gets focus, and which provides
+  length-clamping for the Editor variant.
 
-## Requirements #############################################################
+* Toolbar (_Editor_) - Some helpers for drawing toolbars in the same manner Unity
+  itself does.
 
-* Unity 2.6.0.  This is unlikely to work with Unity/iPhone, without at least 
-considerable modification.
+* Vertical Split-Panes (_Editor_) - Vertically stacked split-panes with draggable
+  resizing.
+
+* Horizontal Split-Panes (_Editor_) - Horizontally stacked split-panes with
+  draggable resizing.
 
 
-## Install ##################################################################
+## Requirements
 
-Grab the unitypackage and install it into your project, OR add this project as
-a submodule if you're using git.
+* Unity 3.1 or 3.0.  This will not work on Unity 2.x, or Unity/iPhone 1.x.
 
-You can grab the unitypackage here:
+
+## Install
+
+Grab the unitypackage and install it into your project:
 
     http://github.com/MrJoy/UnityGUIExtensions.Examples/downloads
 
+OR, if you are using Git for your Unity project, you can add this as a sub-module:
 
-## Source ###################################################################
+    mkdir -p Assets/Editor/
+    git submodule add git://github.com/MrJoy/UnityGUIExtensions.git Assets/Editor/UnityGUIExtensions
+    git submodule init
+    git submodule update
+
+
+## Source
 
 UnityGUIExtensions' Git repo is available on GitHub, which can be browsed at:
 
@@ -38,25 +49,21 @@ and cloned with:
     git clone git://github.com/MrJoy/UnityGUIExtensions.git
 
 
-An example project is available here:
+An example Unity project (which refers to this project as a sub-module) is
+available here:
 
     http://github.com/MrJoy/UnityGUIExtensions.Examples
 
 and can be cloned with:
 
     git clone git://github.com/MrJoy/UnityGUIExtensions.Examples.git
+    git submodule init
+    git submodule update
 
 
-### Contributing
+## Usage
 
-If you'd like to contribute to UnityGUIExtensions, I ask that you fork 
-MrJoy/UnityGUIExtensions on GitHub, and push up a topic branch for each feature 
-you add or bug you fix.  Then create an issue and link to the topic branch and 
-explain what the code does. This allows us to discuss and merge each change 
-separately.
-
-
-## Usage ####################################################################
+### AutoSelect TextArea
 
 Instead of:
 
@@ -64,15 +71,26 @@ Instead of:
 
 You just do:
 
-    myString = GUILayoutExt.AutoSelectTextArea("uniqueWidgetName", myString);
+    myString = GUILayoutAutoSelect.TextArea("uniqueWidgetName", myString);
 
-Variants exist corresponding to all the method signatures of GUI.TextArea, 
-GUILayout.TextArea, EditorGUI.TextArea, and EditorGUILayout.TextArea.  
-Additionally, the EditorGUIExt/EditorGUILayoutExt versions have an additional 
+Variants exist corresponding to all the method signatures of GUI.TextArea,
+GUILayout.TextArea, EditorGUI.TextArea, and EditorGUILayout.TextArea.
+Additionally, the EditorGUIExt/EditorGUILayoutExt versions have an additional
 set of signatures that include the maxLength attribute.
 
+### Vertical Split-Panes
 
-Copyright
----------
+### Toolbars
+
+
+## Copyright
 
 Copyright (c) 2010 MrJoy, Inc. See LICENSE for details.
+
+
+## Contributing
+
+If you'd like to contribute to UnityGUIExtensions, I ask that you fork
+MrJoy/UnityGUIExtensions on GitHub, and push up a topic branch for each feature
+you add or bug you fix.  Then create a pull request and explain what your code
+does. This allows us to discuss and merge each change separately.
