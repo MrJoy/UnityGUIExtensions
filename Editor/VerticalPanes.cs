@@ -111,7 +111,7 @@ public static class EditorGUILayoutVerticalPanes {
     GUILayout.EndVertical();
 
     float availableHeightForOnePanel = vState.availableHeight - (vState.splitterHeight + vState.minPaneHeightBottom);
-    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, GUI.skin.box, vState.SplitterHeight, GUILayout.ExpandWidth(true));
+    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, GUI.skin.box, vState.SplitterHeight, GUIHelper.ExpandWidth);
     if(splitterArea.Contains(Event.current.mousePosition) || vState.isDraggingSplitter) {
       switch(Event.current.type) {
         case EventType.MouseDown:
