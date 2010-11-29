@@ -80,12 +80,77 @@ set of signatures that include the maxLength attribute.
 
 ### Vertical Split-Panes
 
+_This feature may only be used from editor classes_
+
+Simplest possible usage:
+
+    public void OnGUI() {
+      EditorGUILayoutVerticalPanes.Begin();
+        // Draw your upper pane here.
+      EditorGUILayoutVerticalPanes.Splitter();
+        // Draw your lower pane here.
+      EditorGUILayoutVerticalPanes.End();
+    }
+
+However, if you wish to exert more control over this, you can specify a
+configuration for the panes:
+
+    private VerticalPaneState paneConfiguration = new VerticalPaneState() {
+      initialTopPaneHeight = 80,
+      minPaneHeightTop = 65,
+      minPaneHeightBottom = 100
+    };
+
+    public void OnGUI() {
+      EditorGUILayoutVerticalPanes.Begin(paneConfiguration);
+        // Draw your upper pane here.
+      EditorGUILayoutVerticalPanes.Splitter();
+        // Draw your lower pane here.
+      EditorGUILayoutVerticalPanes.End();
+    }
+
+### Horizontal Split-Panes
+
+_This feature may only be used from editor classes_
+
+Simplest possible usage:
+
+    public void OnGUI() {
+      EditorGUILayoutHorizontalPanes.Begin();
+        // Draw your left pane here.
+      EditorGUILayoutHorizontalPanes.Splitter();
+        // Draw your right pane here.
+      EditorGUILayoutHorizontalPanes.End();
+    }
+
+However, if you wish to exert more control over this, you can specify a
+configuration for the panes:
+
+    private HorizontalPaneState paneConfiguration = new HorizontalPaneState() {
+      initialLeftPaneWidth = 80,
+      minPaneWidthLeft = 65,
+      minPaneWidthRight = 100
+    };
+
+    public void OnGUI() {
+      EditorGUILayoutHorizontalPanes.Begin(paneConfiguration);
+        // Draw your left pane here.
+      EditorGUILayoutHorizontalPanes.Splitter();
+        // Draw your right pane here.
+      EditorGUILayoutHorizontalPanes.End();
+    }
+
+
 ### Toolbars
 
+_This feature may only be used from editor classes_
 
-## Copyright
 
-Copyright (c) 2010 MrJoy, Inc. See LICENSE for details.
+## License
+
+Copyright (c) 2010 MrJoy, Inc.
+
+Dual licensed under the terms of the MIT X11 or GNU GPL.
 
 
 ## Contributing
