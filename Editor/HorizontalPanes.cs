@@ -9,7 +9,7 @@ public class HorizontalPaneState {
                lastAvailableWidth = -1, availableWidth = 0,
                minPaneWidthLeft = 75, minPaneWidthRight = 75;
 
-  private float _splitterWidth = 5;
+  private float _splitterWidth = 7;
   public float splitterWidth {
     get { return _splitterWidth; }
     set {
@@ -111,7 +111,7 @@ public static class EditorGUILayoutHorizontalPanes {
     GUILayout.EndHorizontal();
 
     float availableWidthForOnePanel = hState.availableWidth - (hState.splitterWidth + hState.minPaneWidthRight);
-    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, GUI.skin.box, hState.SplitterWidth, GUIHelper.ExpandHeight);
+    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, HorizontalPaneStyles.Splitter, hState.SplitterWidth, GUIHelper.ExpandHeight);
     if(splitterArea.Contains(Event.current.mousePosition) || hState.isDraggingSplitter) {
       switch(Event.current.type) {
         case EventType.MouseDown:
@@ -133,13 +133,57 @@ public static class EditorGUILayoutHorizontalPanes {
       if(hState.leftPaneWidth >= availableWidthForOnePanel) hState.leftPaneWidth = availableWidthForOnePanel;
       if(EditorWindow.focusedWindow != null) EditorWindow.focusedWindow.Repaint();
     }
-    // TODO: Better styling here...
-    GUI.Label(splitterArea, hSplitterContent, GUI.skin.box);
+    GUI.Label(splitterArea, GUIHelper.NoContent, HorizontalPaneStyles.Splitter);
     //EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeHorizontal);
   }
-  private static GUIContent hSplitterContent = new GUIContent("--");
 
   public static void End() {
     EditorGUILayout.EndHorizontal();
+  }
+}
+
+public static class HorizontalPaneStyles {
+  private static Texture2D SplitterImage;
+  static HorizontalPaneStyles() {
+    // TODO: Change the image color based on chosen editor skin.
+    SplitterImage = new Texture2D(7, 1, TextureFormat.ARGB32, false);
+    SplitterImage.hideFlags = HideFlags.HideAndDontSave;
+    Color _ = Color.clear, X = Color.black;
+    SplitterImage.SetPixels(new Color[] {
+      _,_,_,X,_,_,_,
+    });
+    SplitterImage.Apply();
+    SplitterImage.anisoLevel = 0;
+    SplitterImage.filterMode = FilterMode.Point;
+    SplitterImage.wrapMode = TextureWrapMode.Clamp;
+  }
+
+  private static GUIStyle _Splitter = null;
+  public static GUIStyle Splitter {
+    get {
+      if(_Splitter == null) {
+        _Splitter = new GUIStyle() {
+          normal = new GUIStyleState() {
+            background = SplitterImage
+          },
+          imagePosition = ImagePosition.ImageOnly,
+          padding = new RectOffset(0,0,0,0),
+          margin = new RectOffset(0,0,0,0),
+          overflow = new RectOffset(0,0,0,0),
+          contentOffset = Vector2.zero,
+          wordWrap = false,
+          clipping = TextClipping.Clip,
+          alignment = TextAnchor.MiddleCenter,
+
+          //border = new RectOffset(l,r,t,b),
+          border = new RectOffset(2,2,1,1),
+          fixedWidth = 7,
+          fixedHeight = 0,
+          stretchWidth = true,
+          stretchHeight = false,
+        };
+      }
+      return _Splitter;
+    }
   }
 }

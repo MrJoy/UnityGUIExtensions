@@ -9,7 +9,7 @@ public class VerticalPaneState {
                lastAvailableHeight = -1, availableHeight = 0,
                minPaneHeightTop = 75, minPaneHeightBottom = 75;
 
-  private float _splitterHeight = 5;
+  private float _splitterHeight = 7;
   public float splitterHeight {
     get { return _splitterHeight; }
     set {
@@ -111,7 +111,7 @@ public static class EditorGUILayoutVerticalPanes {
     GUILayout.EndVertical();
 
     float availableHeightForOnePanel = vState.availableHeight - (vState.splitterHeight + vState.minPaneHeightBottom);
-    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, GUI.skin.box, vState.SplitterHeight, GUIHelper.ExpandWidth);
+    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, VerticalPaneStyles.Splitter, vState.SplitterHeight, GUIHelper.ExpandWidth);
     if(splitterArea.Contains(Event.current.mousePosition) || vState.isDraggingSplitter) {
       switch(Event.current.type) {
         case EventType.MouseDown:
@@ -120,6 +120,7 @@ public static class EditorGUILayoutVerticalPanes {
         case EventType.MouseDrag:
           if(vState.isDraggingSplitter) {
             vState.topPaneHeight += Event.current.delta.y;
+            vState.topPaneHeight = Mathf.Round(vState.topPaneHeight);
             vState.isPaneHeightChanged = true;
           }
           break;
@@ -133,13 +134,63 @@ public static class EditorGUILayoutVerticalPanes {
       if(vState.topPaneHeight >= availableHeightForOnePanel) vState.topPaneHeight = availableHeightForOnePanel;
       if(EditorWindow.focusedWindow != null) EditorWindow.focusedWindow.Repaint();
     }
-    // TODO: Better styling here...
-    GUI.Label(splitterArea, vSplitterContent, GUI.skin.box);
+    GUI.Label(splitterArea, GUIHelper.NoContent, VerticalPaneStyles.Splitter);
     //EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeVertical);
   }
-  private static GUIContent vSplitterContent = new GUIContent("--");
 
   public static void End() {
     EditorGUILayout.EndVertical();
+  }
+}
+
+public static class VerticalPaneStyles {
+  private static Texture2D SplitterImage;
+  static VerticalPaneStyles() {
+    // TODO: Change the image color based on chosen editor skin.
+    SplitterImage = new Texture2D(1, 7, TextureFormat.ARGB32, false);
+    SplitterImage.hideFlags = HideFlags.HideAndDontSave;
+    Color _ = Color.clear, X = Color.black;
+    SplitterImage.SetPixels(new Color[] {
+      _,
+      _,
+      _,
+      X,
+      _,
+      _,
+      _,
+    });
+    SplitterImage.Apply();
+    SplitterImage.anisoLevel = 0;
+    SplitterImage.filterMode = FilterMode.Point;
+    SplitterImage.wrapMode = TextureWrapMode.Clamp;
+  }
+
+  private static GUIStyle _Splitter = null;
+  public static GUIStyle Splitter {
+    get {
+      if(_Splitter == null) {
+        _Splitter = new GUIStyle() {
+          normal = new GUIStyleState() {
+            background = SplitterImage
+          },
+          imagePosition = ImagePosition.ImageOnly,
+          padding = new RectOffset(0,0,0,0),
+          margin = new RectOffset(0,0,0,0),
+          overflow = new RectOffset(0,0,0,0),
+          contentOffset = Vector2.zero,
+          wordWrap = false,
+          clipping = TextClipping.Clip,
+          alignment = TextAnchor.MiddleCenter,
+
+          //border = new RectOffset(l,r,t,b),
+          border = new RectOffset(1,1,2,2),
+          fixedWidth = 0,
+          fixedHeight = 7,
+          stretchWidth = true,
+          stretchHeight = false,
+        };
+      }
+      return _Splitter;
+    }
   }
 }
