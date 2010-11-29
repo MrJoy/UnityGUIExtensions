@@ -72,6 +72,7 @@ public class VerticalPaneState {
 }
 
 public static class EditorGUILayoutVerticalPanes {
+  // TODO: This makes it impossible to nest pane sets!
   private static VerticalPaneState vState;
 
   public static void Begin() {
