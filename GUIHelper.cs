@@ -6,6 +6,8 @@ public static class GUIHelper {
                                 ExpandHeight = GUILayout.ExpandHeight(true),
                                 NoExpandHeight = GUILayout.ExpandHeight(false);
 
+  public static GUILayoutOption Width(float w) { return GUILayout.Width(w); }
+
   public static GUIStyle NoStyle = GUIStyle.none;
   public static GUIContent NoContent = GUIContent.none;
 }
