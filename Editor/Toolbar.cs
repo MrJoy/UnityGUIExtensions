@@ -17,7 +17,6 @@ public static class EditorGUILayoutToolbar {
   }
 
   public static void End() {
-    GUILayout.Label(GUIContent.none, GUIStyle.none, GUIHelper.ExpandWidth);
     GUILayout.EndHorizontal();
   }
 }
