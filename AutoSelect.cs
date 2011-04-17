@@ -82,7 +82,7 @@ public static class CoreAutoSelect {
         // It is!  Now, get the editor state (spooky voodo!), and tweak it.
         TextEditor t = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), kbdCtrlId);
         t.SelectAll();
-        // Update this here or state gets mangled when there's multiple 
+        // Update this here or state gets mangled when there's multiple
         // AutoSelectTextArea.
         lastKeyboardControl = kbdCtrlId;
       }
