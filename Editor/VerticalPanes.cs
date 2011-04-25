@@ -2,32 +2,14 @@ using UnityEngine;
 using UnityEditor;
 
 public class VerticalPaneState {
+  public const int SPLITTER_HEIGHT = 9;
+
   public int id = 0;
   public bool isDraggingSplitter = false,
               isPaneHeightChanged = false;
   public float topPaneHeight = -1, initialTopPaneHeight = -1,
                lastAvailableHeight = -1, availableHeight = 0,
                minPaneHeightTop = 75, minPaneHeightBottom = 75;
-
-  private float _splitterHeight = 7;
-  public float splitterHeight {
-    get { return _splitterHeight; }
-    set {
-      if(value != _splitterHeight) {
-        _splitterHeight = value;
-        _SplitterHeight = null;
-      }
-    }
-  }
-
-  private GUILayoutOption _SplitterHeight = null;
-  public GUILayoutOption SplitterHeight {
-    get {
-      if(_SplitterHeight == null)
-        _SplitterHeight = GUILayout.Height(_splitterHeight);
-      return _SplitterHeight;
-    }
-  }
 
   /*
   * Unity can, apparently, recycle state objects.  In that event we want to
@@ -85,7 +67,7 @@ public static class EditorGUILayoutVerticalPanes {
     vState.ResolveStateToCurrentContext(id, prototype);
 
     Rect totalArea = EditorGUILayout.BeginVertical();
-      vState.availableHeight = totalArea.height - vState.splitterHeight;
+      vState.availableHeight = totalArea.height - VerticalPaneState.SPLITTER_HEIGHT;
       vState.isPaneHeightChanged = false;
       if(totalArea.height > 0) {
         if(vState.topPaneHeight < 0) {
@@ -110,8 +92,9 @@ public static class EditorGUILayoutVerticalPanes {
   public static void Splitter() {
     GUILayout.EndVertical();
 
-    float availableHeightForOnePanel = vState.availableHeight - (vState.splitterHeight + vState.minPaneHeightBottom);
-    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, VerticalPaneStyles.Splitter, vState.SplitterHeight, GUIHelper.ExpandWidth);
+    float availableHeightForOnePanel = vState.availableHeight - (1 + vState.minPaneHeightBottom);
+    Rect drawableSplitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, VerticalPaneStyles.Splitter, GUILayout.Height(1f), GUIHelper.ExpandWidth);
+    Rect splitterArea = new Rect(drawableSplitterArea.xMin, drawableSplitterArea.yMin - (int)(VerticalPaneState.SPLITTER_HEIGHT * 0.5f), drawableSplitterArea.width, VerticalPaneState.SPLITTER_HEIGHT);
     if(splitterArea.Contains(Event.current.mousePosition) || vState.isDraggingSplitter) {
       switch(Event.current.type) {
         case EventType.MouseDown:
@@ -134,7 +117,7 @@ public static class EditorGUILayoutVerticalPanes {
       if(vState.topPaneHeight >= availableHeightForOnePanel) vState.topPaneHeight = availableHeightForOnePanel;
       if(EditorWindow.focusedWindow != null) EditorWindow.focusedWindow.Repaint();
     }
-    GUI.Label(splitterArea, GUIHelper.NoContent, VerticalPaneStyles.Splitter);
+    GUI.Label(drawableSplitterArea, GUIHelper.NoContent, VerticalPaneStyles.Splitter);
     EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeVertical);
   }
 
@@ -147,22 +130,13 @@ public static class VerticalPaneStyles {
   private static Texture2D SplitterImage;
   static VerticalPaneStyles() {
     // TODO: Change the image color based on chosen editor skin.
-    Color _ = Color.clear, X = Color.black;
-    SplitterImage = new Texture2D(1, 7, TextureFormat.ARGB32, false) {
+    SplitterImage = new Texture2D(1, 1, TextureFormat.ARGB32, false) {
       hideFlags = HideFlags.HideAndDontSave,
       anisoLevel = 0,
       filterMode = FilterMode.Point,
       wrapMode = TextureWrapMode.Clamp
     };
-    SplitterImage.SetPixels(new Color[] {
-      _,
-      _,
-      _,
-      X,
-      _,
-      _,
-      _,
-    });
+    SplitterImage.SetPixels(new Color[] { Color.black });
     SplitterImage.Apply();
   }
 
@@ -179,9 +153,8 @@ public static class VerticalPaneStyles {
           alignment = TextAnchor.MiddleCenter
         }
           .Named("VSplitter")
-          .Size(0, 7, true, false)
+          .Size(0, 1, true, false)
           .ResetBoxModel()
-          .Border(1,1,2,2)
           .ClipText();
       }
       return _Splitter;

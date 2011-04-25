@@ -2,32 +2,14 @@ using UnityEngine;
 using UnityEditor;
 
 public class HorizontalPaneState {
+  public const int SPLITTER_WIDTH = 9;
+
   public int id = 0;
   public bool isDraggingSplitter = false,
               isPaneWidthChanged = false;
   public float leftPaneWidth = -1, initialLeftPaneWidth = -1,
                lastAvailableWidth = -1, availableWidth = 0,
                minPaneWidthLeft = 75, minPaneWidthRight = 75;
-
-  private float _splitterWidth = 7;
-  public float splitterWidth {
-    get { return _splitterWidth; }
-    set {
-      if(value != _splitterWidth) {
-        _splitterWidth = value;
-        _SplitterWidth = null;
-      }
-    }
-  }
-
-  private GUILayoutOption _SplitterWidth = null;
-  public GUILayoutOption SplitterWidth {
-    get {
-      if(_SplitterWidth == null)
-        _SplitterWidth = GUILayout.Width(_splitterWidth);
-      return _SplitterWidth;
-    }
-  }
 
   /*
   * Unity can, apparently, recycle state objects.  In that event we want to
@@ -85,7 +67,7 @@ public static class EditorGUILayoutHorizontalPanes {
     hState.ResolveStateToCurrentContext(id, prototype);
 
     Rect totalArea = EditorGUILayout.BeginHorizontal();
-      hState.availableWidth = totalArea.width - hState.splitterWidth;
+      hState.availableWidth = totalArea.width - HorizontalPaneState.SPLITTER_WIDTH;
       hState.isPaneWidthChanged = false;
       if(totalArea.width > 0) {
         if(hState.leftPaneWidth < 0) {
@@ -110,8 +92,9 @@ public static class EditorGUILayoutHorizontalPanes {
   public static void Splitter() {
     GUILayout.EndHorizontal();
 
-    float availableWidthForOnePanel = hState.availableWidth - (hState.splitterWidth + hState.minPaneWidthRight);
-    Rect splitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, HorizontalPaneStyles.Splitter, hState.SplitterWidth, GUIHelper.ExpandHeight);
+    float availableWidthForOnePanel = hState.availableWidth - (1 + hState.minPaneWidthRight);
+    Rect drawableSplitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, HorizontalPaneStyles.Splitter, GUILayout.Width(1f), GUIHelper.ExpandHeight);
+    Rect splitterArea = new Rect(drawableSplitterArea.xMin - (int)(HorizontalPaneState.SPLITTER_WIDTH * 0.5f), drawableSplitterArea.yMin, HorizontalPaneState.SPLITTER_WIDTH, drawableSplitterArea.height);
     if(splitterArea.Contains(Event.current.mousePosition) || hState.isDraggingSplitter) {
       switch(Event.current.type) {
         case EventType.MouseDown:
@@ -120,6 +103,7 @@ public static class EditorGUILayoutHorizontalPanes {
         case EventType.MouseDrag:
           if(hState.isDraggingSplitter) {
             hState.leftPaneWidth += Event.current.delta.x;
+            hState.leftPaneWidth = Mathf.Round(hState.leftPaneWidth);
             hState.isPaneWidthChanged = true;
           }
           break;
@@ -133,7 +117,7 @@ public static class EditorGUILayoutHorizontalPanes {
       if(hState.leftPaneWidth >= availableWidthForOnePanel) hState.leftPaneWidth = availableWidthForOnePanel;
       if(EditorWindow.focusedWindow != null) EditorWindow.focusedWindow.Repaint();
     }
-    GUI.Label(splitterArea, GUIHelper.NoContent, HorizontalPaneStyles.Splitter);
+    GUI.Label(drawableSplitterArea, GUIHelper.NoContent, HorizontalPaneStyles.Splitter);
     EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeHorizontal);
   }
 
@@ -146,16 +130,13 @@ public static class HorizontalPaneStyles {
   private static Texture2D SplitterImage;
   static HorizontalPaneStyles() {
     // TODO: Change the image color based on chosen editor skin.
-    Color _ = Color.clear, X = Color.black;
-    SplitterImage = new Texture2D(7, 1, TextureFormat.ARGB32, false) {
+    SplitterImage = new Texture2D(1, 1, TextureFormat.ARGB32, false) {
       hideFlags = HideFlags.HideAndDontSave,
       anisoLevel = 0,
       filterMode = FilterMode.Point,
       wrapMode = TextureWrapMode.Clamp
     };
-    SplitterImage.SetPixels(new Color[] {
-      _,_,_,X,_,_,_,
-    });
+    SplitterImage.SetPixels(new Color[] { Color.black });
     SplitterImage.Apply();
   }
 
@@ -172,9 +153,8 @@ public static class HorizontalPaneStyles {
           alignment = TextAnchor.MiddleCenter,
         }
           .Named("HSplitter")
-          .Size(7, 0, false, true)
+          .Size(1, 0, false, true)
           .ResetBoxModel()
-          .Border(2,2,1,1)
           .ClipText();
       }
       return _Splitter;
