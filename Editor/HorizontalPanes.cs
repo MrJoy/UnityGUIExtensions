@@ -146,16 +146,17 @@ public static class HorizontalPaneStyles {
   private static Texture2D SplitterImage;
   static HorizontalPaneStyles() {
     // TODO: Change the image color based on chosen editor skin.
-    SplitterImage = new Texture2D(7, 1, TextureFormat.ARGB32, false);
-    SplitterImage.hideFlags = HideFlags.HideAndDontSave;
     Color _ = Color.clear, X = Color.black;
+    SplitterImage = new Texture2D(7, 1, TextureFormat.ARGB32, false) {
+      hideFlags = HideFlags.HideAndDontSave,
+      anisoLevel = 0,
+      filterMode = FilterMode.Point,
+      wrapMode = TextureWrapMode.Clamp
+    };
     SplitterImage.SetPixels(new Color[] {
       _,_,_,X,_,_,_,
     });
     SplitterImage.Apply();
-    SplitterImage.anisoLevel = 0;
-    SplitterImage.filterMode = FilterMode.Point;
-    SplitterImage.wrapMode = TextureWrapMode.Clamp;
   }
 
   private static GUIStyle _Splitter = null;
@@ -167,21 +168,14 @@ public static class HorizontalPaneStyles {
             background = SplitterImage
           },
           imagePosition = ImagePosition.ImageOnly,
-          padding = new RectOffset(0,0,0,0),
-          margin = new RectOffset(0,0,0,0),
-          overflow = new RectOffset(0,0,0,0),
-          contentOffset = Vector2.zero,
           wordWrap = false,
-          clipping = TextClipping.Clip,
           alignment = TextAnchor.MiddleCenter,
-
-          //border = new RectOffset(l,r,t,b),
-          border = new RectOffset(2,2,1,1),
-          fixedWidth = 7,
-          fixedHeight = 0,
-          stretchWidth = true,
-          stretchHeight = false,
-        };
+        }
+          .Named("HSplitter")
+          .Size(7, 0, false, true)
+          .ResetBoxModel()
+          .Border(2,2,1,1)
+          .ClipText();
       }
       return _Splitter;
     }

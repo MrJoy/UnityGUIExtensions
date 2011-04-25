@@ -147,9 +147,13 @@ public static class VerticalPaneStyles {
   private static Texture2D SplitterImage;
   static VerticalPaneStyles() {
     // TODO: Change the image color based on chosen editor skin.
-    SplitterImage = new Texture2D(1, 7, TextureFormat.ARGB32, false);
-    SplitterImage.hideFlags = HideFlags.HideAndDontSave;
     Color _ = Color.clear, X = Color.black;
+    SplitterImage = new Texture2D(1, 7, TextureFormat.ARGB32, false) {
+      hideFlags = HideFlags.HideAndDontSave,
+      anisoLevel = 0,
+      filterMode = FilterMode.Point,
+      wrapMode = TextureWrapMode.Clamp
+    };
     SplitterImage.SetPixels(new Color[] {
       _,
       _,
@@ -160,9 +164,6 @@ public static class VerticalPaneStyles {
       _,
     });
     SplitterImage.Apply();
-    SplitterImage.anisoLevel = 0;
-    SplitterImage.filterMode = FilterMode.Point;
-    SplitterImage.wrapMode = TextureWrapMode.Clamp;
   }
 
   private static GUIStyle _Splitter = null;
@@ -174,21 +175,14 @@ public static class VerticalPaneStyles {
             background = SplitterImage
           },
           imagePosition = ImagePosition.ImageOnly,
-          padding = new RectOffset(0,0,0,0),
-          margin = new RectOffset(0,0,0,0),
-          overflow = new RectOffset(0,0,0,0),
-          contentOffset = Vector2.zero,
           wordWrap = false,
-          clipping = TextClipping.Clip,
-          alignment = TextAnchor.MiddleCenter,
-
-          //border = new RectOffset(l,r,t,b),
-          border = new RectOffset(1,1,2,2),
-          fixedWidth = 0,
-          fixedHeight = 7,
-          stretchWidth = true,
-          stretchHeight = false,
-        };
+          alignment = TextAnchor.MiddleCenter
+        }
+          .Named("VSplitter")
+          .Size(0, 7, true, false)
+          .ResetBoxModel()
+          .Border(1,1,2,2)
+          .ClipText();
       }
       return _Splitter;
     }
