@@ -134,7 +134,7 @@ public static class EditorGUILayoutHorizontalPanes {
       if(EditorWindow.focusedWindow != null) EditorWindow.focusedWindow.Repaint();
     }
     GUI.Label(splitterArea, GUIHelper.NoContent, HorizontalPaneStyles.Splitter);
-    //EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeHorizontal);
+    EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeHorizontal);
   }
 
   public static void End() {

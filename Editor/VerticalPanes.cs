@@ -135,7 +135,7 @@ public static class EditorGUILayoutVerticalPanes {
       if(EditorWindow.focusedWindow != null) EditorWindow.focusedWindow.Repaint();
     }
     GUI.Label(splitterArea, GUIHelper.NoContent, VerticalPaneStyles.Splitter);
-    //EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeVertical);
+    EditorGUIUtility.AddCursorRect(splitterArea, MouseCursor.ResizeVertical);
   }
 
   public static void End() {
