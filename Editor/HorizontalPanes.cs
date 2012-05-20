@@ -95,23 +95,31 @@ public static class EditorGUILayoutHorizontalPanes {
     float availableWidthForOnePanel = hState.availableWidth - (1 + hState.minPaneWidthRight);
     Rect drawableSplitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, HorizontalPaneStyles.Splitter, GUILayout.Width(1f), GUIHelper.ExpandHeight);
     Rect splitterArea = new Rect(drawableSplitterArea.xMin - (int)(HorizontalPaneState.SPLITTER_WIDTH * 0.5f), drawableSplitterArea.yMin, HorizontalPaneState.SPLITTER_WIDTH, drawableSplitterArea.height);
-    if(splitterArea.Contains(Event.current.mousePosition) || hState.isDraggingSplitter) {
-      switch(Event.current.type) {
-        case EventType.MouseDown:
+    switch(Event.current.type) {
+      case EventType.MouseDown:
+        if(splitterArea.Contains(Event.current.mousePosition)) {
           hState.isDraggingSplitter = true;
-          break;
-        case EventType.MouseDrag:
-          if(hState.isDraggingSplitter) {
-            hState.leftPaneWidth += Event.current.delta.x;
-            hState.leftPaneWidth = Mathf.Round(hState.leftPaneWidth);
-            hState.isPaneWidthChanged = true;
-          }
-          break;
-        case EventType.MouseUp:
-          hState.isDraggingSplitter = false;
-          break;
-      }
+          GUIUtility.hotControl = hState.id;
+          Event.current.Use();
+        }
+        break;
+      case EventType.MouseDrag:
+        if(hState.isDraggingSplitter && hState.id == GUIUtility.hotControl) {
+          hState.leftPaneWidth += Event.current.delta.x;
+          hState.leftPaneWidth = Mathf.Round(hState.leftPaneWidth);
+          hState.isPaneWidthChanged = true;
+          Event.current.Use();
+        }
+        break;
+      case EventType.MouseUp:
+        hState.isDraggingSplitter = false;
+        if(hState.id == GUIUtility.hotControl) {
+          GUIUtility.hotControl = 0;
+          Event.current.Use();
+        }
+        break;
     }
+
     if(hState.isPaneWidthChanged) {
       if(hState.leftPaneWidth < hState.minPaneWidthLeft) hState.leftPaneWidth = hState.minPaneWidthLeft;
       if(hState.leftPaneWidth >= availableWidthForOnePanel) hState.leftPaneWidth = availableWidthForOnePanel;
@@ -136,7 +144,7 @@ public static class HorizontalPaneStyles {
       filterMode = FilterMode.Point,
       wrapMode = TextureWrapMode.Clamp
     };
-    SplitterImage.SetPixels(new Color[] { Color.black });
+    SplitterImage.SetPixels(new Color[] { Color.gray });
     SplitterImage.Apply();
   }
 
@@ -155,6 +163,7 @@ public static class HorizontalPaneStyles {
           .Named("HSplitter")
           .Size(1, 0, false, true)
           .ResetBoxModel()
+          .Margin(3, 3, 0, 0)
           .ClipText();
       }
       return _Splitter;

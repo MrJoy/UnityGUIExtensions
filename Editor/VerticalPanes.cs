@@ -95,23 +95,31 @@ public static class EditorGUILayoutVerticalPanes {
     float availableHeightForOnePanel = vState.availableHeight - (1 + vState.minPaneHeightBottom);
     Rect drawableSplitterArea = GUILayoutUtility.GetRect(GUIHelper.NoContent, VerticalPaneStyles.Splitter, GUILayout.Height(1f), GUIHelper.ExpandWidth);
     Rect splitterArea = new Rect(drawableSplitterArea.xMin, drawableSplitterArea.yMin - (int)(VerticalPaneState.SPLITTER_HEIGHT * 0.5f), drawableSplitterArea.width, VerticalPaneState.SPLITTER_HEIGHT);
-    if(splitterArea.Contains(Event.current.mousePosition) || vState.isDraggingSplitter) {
-      switch(Event.current.type) {
-        case EventType.MouseDown:
+    switch(Event.current.type) {
+      case EventType.MouseDown:
+        if(splitterArea.Contains(Event.current.mousePosition)) {
           vState.isDraggingSplitter = true;
-          break;
-        case EventType.MouseDrag:
-          if(vState.isDraggingSplitter) {
-            vState.topPaneHeight += Event.current.delta.y;
-            vState.topPaneHeight = Mathf.Round(vState.topPaneHeight);
-            vState.isPaneHeightChanged = true;
-          }
-          break;
-        case EventType.MouseUp:
-          vState.isDraggingSplitter = false;
-          break;
-      }
+          GUIUtility.hotControl = vState.id;
+          Event.current.Use();
+        }
+        break;
+      case EventType.MouseDrag:
+        if(vState.isDraggingSplitter && vState.id == GUIUtility.hotControl) {
+          vState.topPaneHeight += Event.current.delta.y;
+          vState.topPaneHeight = Mathf.Round(vState.topPaneHeight);
+          vState.isPaneHeightChanged = true;
+          Event.current.Use();
+        }
+        break;
+      case EventType.MouseUp:
+        vState.isDraggingSplitter = false;
+        if(vState.id == GUIUtility.hotControl) {
+          GUIUtility.hotControl = 0;
+          Event.current.Use();
+        }
+        break;
     }
+
     if(vState.isPaneHeightChanged) {
       if(vState.topPaneHeight < vState.minPaneHeightTop) vState.topPaneHeight = vState.minPaneHeightTop;
       if(vState.topPaneHeight >= availableHeightForOnePanel) vState.topPaneHeight = availableHeightForOnePanel;
@@ -136,7 +144,7 @@ public static class VerticalPaneStyles {
       filterMode = FilterMode.Point,
       wrapMode = TextureWrapMode.Clamp
     };
-    SplitterImage.SetPixels(new Color[] { Color.black });
+    SplitterImage.SetPixels(new Color[] { Color.gray });
     SplitterImage.Apply();
   }
 
@@ -155,6 +163,7 @@ public static class VerticalPaneStyles {
           .Named("VSplitter")
           .Size(0, 1, true, false)
           .ResetBoxModel()
+          .Margin(0, 0, 3, 3)
           .ClipText();
       }
       return _Splitter;
