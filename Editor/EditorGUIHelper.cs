@@ -10,6 +10,16 @@ public static class EditorGUIStyleExtensions {
     }
   }
 
+  private static bool wasProSkin = EditorGUIUtility.isProSkin;
+  public static void InvalidateOnSkinChange(GUIStyle[] styles) {
+    if(EditorGUIUtility.isProSkin != wasProSkin) {
+      wasProSkin = EditorGUIUtility.isProSkin;
+      for(int i = 0; i < styles.Length; i++) {
+        styles[i] = null;
+      }
+    }
+  }
+
   public static GUIStyle BaseTextColor(this GUIStyle style, Color normalSkin, Color proSkin) {
     style.normal.textColor =
       style.active.textColor =
