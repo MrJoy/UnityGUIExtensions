@@ -2,14 +2,6 @@ using UnityEngine;
 using UnityEditor;
 
 public static class EditorGUIStyleExtensions {
-  public static bool IsProSkin {
-    get {
-      GUISkin tmp = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
-      Color textColor = tmp.label.normal.textColor;
-      return textColor != Color.black;
-    }
-  }
-
   private static bool wasProSkin = EditorGUIUtility.isProSkin;
   public static void InvalidateOnSkinChange(GUIStyle[] styles) {
     if(EditorGUIUtility.isProSkin != wasProSkin) {
@@ -29,7 +21,7 @@ public static class EditorGUIStyleExtensions {
       style.onActive.textColor =
       style.onHover.textColor =
       style.onFocused.textColor =
-        IsProSkin ? proSkin : normalSkin;
+        EditorGUIUtility.isProSkin ? proSkin : normalSkin;
     return style;
   }
 }
