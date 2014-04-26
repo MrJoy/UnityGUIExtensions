@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System;
-using System.Collections;
 
 // Extensions in the spirit/style of EditorGUI.*
 public static class EditorGUIAutoSelect {

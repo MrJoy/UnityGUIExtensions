@@ -1,7 +1,4 @@
-using UnityEngine;
-using UnityEditor;
 using System;
-using System.Collections;
 
 // Helper/support stuff.
 internal static class EditorGUICommon {
