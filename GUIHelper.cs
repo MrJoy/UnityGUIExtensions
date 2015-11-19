@@ -1,13 +1,16 @@
 using UnityEngine;
 
 public static class GUIHelper {
+  // Don't create new instances every time we need an option -- just pre-create the permutations:
   public static GUILayoutOption ExpandWidth     = GUILayout.ExpandWidth(true),
                                 NoExpandWidth   = GUILayout.ExpandWidth(false),
                                 ExpandHeight    = GUILayout.ExpandHeight(true),
                                 NoExpandHeight  = GUILayout.ExpandHeight(false);
 
+  // Provided for consistency of interface, but not actually a savings/win:
   public static GUILayoutOption Width(float w) { return GUILayout.Width(w); }
 
+  // Again, don't create instances when we don't need to:
   public static GUIStyle NoStyle = GUIStyle.none;
   public static GUIContent NoContent = GUIContent.none;
 }
