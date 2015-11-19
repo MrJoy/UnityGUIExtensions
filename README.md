@@ -150,7 +150,7 @@ _This feature may only be used from editor classes_
 
 ## License
 
-Copyright (c) 2010 MrJoy, Inc.
+Copyright (c) 2010-2015 Jon Frisby
 
 Dual licensed under the terms of the MIT X11 or GNU GPL.
 
