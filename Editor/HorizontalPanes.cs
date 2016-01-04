@@ -47,11 +47,10 @@ public class HorizontalPaneState {
   * object.
   */
   public void ResolveStateToCurrentContext(int currentId, HorizontalPaneState prototype) {
-    if(id != currentId) {
+    if(id != currentId)
       Reset(currentId);
-    } else if(prototype != null) {
+    else if(prototype != null)
       InitFromPrototype(currentId, prototype);
-    }
   }
 }
 
@@ -66,27 +65,29 @@ public static class EditorGUILayoutHorizontalPanes {
     hState = (HorizontalPaneState)GUIUtility.GetStateObject(typeof(HorizontalPaneState), id);
     hState.ResolveStateToCurrentContext(id, prototype);
 
+    // *INDENT-OFF*
     Rect totalArea = EditorGUILayout.BeginHorizontal();
-    hState.availableWidth = totalArea.width - HorizontalPaneState.SPLITTER_WIDTH;
-    hState.isPaneWidthChanged = false;
-    if(totalArea.width > 0) {
-      if(hState.leftPaneWidth < 0) {
-        if(hState.initialLeftPaneWidth < 0)
-          hState.leftPaneWidth = hState.availableWidth * 0.5f;
-        else
-          hState.leftPaneWidth = hState.initialLeftPaneWidth;
-        hState.isPaneWidthChanged = true;
-      }
-      if(hState.lastAvailableWidth < 0)
+      hState.availableWidth = totalArea.width - HorizontalPaneState.SPLITTER_WIDTH;
+      hState.isPaneWidthChanged = false;
+      if(totalArea.width > 0) {
+        if(hState.leftPaneWidth < 0) {
+          if(hState.initialLeftPaneWidth < 0)
+            hState.leftPaneWidth = hState.availableWidth * 0.5f;
+          else
+            hState.leftPaneWidth = hState.initialLeftPaneWidth;
+          hState.isPaneWidthChanged = true;
+        }
+        if(hState.lastAvailableWidth < 0)
+          hState.lastAvailableWidth = hState.availableWidth;
+        if(hState.lastAvailableWidth != hState.availableWidth) {
+          hState.leftPaneWidth = hState.availableWidth * (hState.leftPaneWidth / hState.lastAvailableWidth);
+          hState.isPaneWidthChanged = true;
+        }
         hState.lastAvailableWidth = hState.availableWidth;
-      if(hState.lastAvailableWidth != hState.availableWidth) {
-        hState.leftPaneWidth = hState.availableWidth * (hState.leftPaneWidth / hState.lastAvailableWidth);
-        hState.isPaneWidthChanged = true;
       }
-      hState.lastAvailableWidth = hState.availableWidth;
-    }
 
-    GUILayout.BeginHorizontal(GUILayout.Width(hState.leftPaneWidth));
+      GUILayout.BeginHorizontal(GUILayout.Width(hState.leftPaneWidth));
+    // *INDENT-ON*
   }
 
   public static void Splitter() {
@@ -155,6 +156,7 @@ public static class HorizontalPaneStyles {
   public static GUIStyle Splitter {
     get {
       if(_Splitter == null) {
+        // *INDENT-OFF*
         _Splitter = new GUIStyle() {
           normal        = new GUIStyleState() { background = SplitterImage },
           imagePosition = ImagePosition.ImageOnly,
@@ -166,6 +168,7 @@ public static class HorizontalPaneStyles {
           .ResetBoxModel()
           .Margin(3, 3, 0, 0)
           .ClipText();
+        // *INDENT-ON*
       }
       return _Splitter;
     }

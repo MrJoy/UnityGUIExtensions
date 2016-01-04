@@ -48,11 +48,10 @@ public class VerticalPaneState {
   * object.
   */
   public void ResolveStateToCurrentContext(int currentId, VerticalPaneState prototype) {
-    if(id != currentId) {
+    if(id != currentId)
       Reset(currentId);
-    } else if(prototype != null) {
+    else if(prototype != null)
       InitFromPrototype(currentId, prototype);
-    }
   }
 }
 
@@ -67,27 +66,29 @@ public static class EditorGUILayoutVerticalPanes {
     vState = (VerticalPaneState)GUIUtility.GetStateObject(typeof(VerticalPaneState), id);
     vState.ResolveStateToCurrentContext(id, prototype);
 
+    // *INDENT-OFF*
     Rect totalArea = EditorGUILayout.BeginVertical();
-    vState.availableHeight = totalArea.height - VerticalPaneState.SPLITTER_HEIGHT;
-    vState.isPaneHeightChanged = false;
-    if(totalArea.height > 0) {
-      if(vState.topPaneHeight < 0) {
-        if(vState.initialTopPaneHeight < 0)
-          vState.topPaneHeight = vState.availableHeight * 0.5f;
-        else
-          vState.topPaneHeight = vState.initialTopPaneHeight;
-        vState.isPaneHeightChanged = true;
-      }
-      if(vState.lastAvailableHeight < 0)
+      vState.availableHeight = totalArea.height - VerticalPaneState.SPLITTER_HEIGHT;
+      vState.isPaneHeightChanged = false;
+      if(totalArea.height > 0) {
+        if(vState.topPaneHeight < 0) {
+          if(vState.initialTopPaneHeight < 0)
+            vState.topPaneHeight = vState.availableHeight * 0.5f;
+          else
+            vState.topPaneHeight = vState.initialTopPaneHeight;
+          vState.isPaneHeightChanged = true;
+        }
+        if(vState.lastAvailableHeight < 0)
+          vState.lastAvailableHeight = vState.availableHeight;
+        if(vState.lastAvailableHeight != vState.availableHeight) {
+          vState.topPaneHeight = vState.availableHeight * (vState.topPaneHeight / vState.lastAvailableHeight);
+          vState.isPaneHeightChanged = true;
+        }
         vState.lastAvailableHeight = vState.availableHeight;
-      if(vState.lastAvailableHeight != vState.availableHeight) {
-        vState.topPaneHeight = vState.availableHeight * (vState.topPaneHeight / vState.lastAvailableHeight);
-        vState.isPaneHeightChanged = true;
       }
-      vState.lastAvailableHeight = vState.availableHeight;
-    }
 
-    GUILayout.BeginVertical(GUILayout.Height(vState.topPaneHeight));
+      GUILayout.BeginVertical(GUILayout.Height(vState.topPaneHeight));
+    // *INDENT-ON*
   }
 
   public static void Splitter() {
@@ -156,6 +157,7 @@ public static class VerticalPaneStyles {
   public static GUIStyle Splitter {
     get {
       if(_Splitter == null) {
+        // *INDENT-OFF*
         _Splitter = new GUIStyle() {
           normal        = new GUIStyleState() { background = SplitterImage },
           imagePosition = ImagePosition.ImageOnly,
@@ -167,6 +169,7 @@ public static class VerticalPaneStyles {
           .ResetBoxModel()
           .Margin(0, 0, 3, 3)
           .ClipText();
+        // *INDENT-ON*
       }
       return _Splitter;
     }

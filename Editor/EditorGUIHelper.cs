@@ -13,6 +13,7 @@ public static class EditorGUIStyleExtensions {
   }
 
   public static GUIStyle BaseTextColor(this GUIStyle style, Color normalSkin, Color proSkin) {
+    // *INDENT-OFF*
     style.normal.textColor =
       style.active.textColor =
       style.hover.textColor =
@@ -21,7 +22,8 @@ public static class EditorGUIStyleExtensions {
       style.onActive.textColor =
       style.onHover.textColor =
       style.onFocused.textColor =
-      EditorGUIUtility.isProSkin ? proSkin : normalSkin;
+        EditorGUIUtility.isProSkin ? proSkin : normalSkin;
+    // *INDENT-ON*
     return style;
   }
 }

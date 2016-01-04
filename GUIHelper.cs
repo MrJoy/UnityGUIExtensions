@@ -30,6 +30,7 @@ public static class GUIStyleExtensions {
   }
 
   public static GUIStyle BaseTextColor(this GUIStyle style, Color c) {
+    // *INDENT-OFF*
     style.normal.textColor =
       style.active.textColor =
       style.hover.textColor =
@@ -38,7 +39,8 @@ public static class GUIStyleExtensions {
       style.onActive.textColor =
       style.onHover.textColor =
       style.onFocused.textColor =
-      c;
+        c;
+    // *INDENT-ON*
     return style;
   }
 
